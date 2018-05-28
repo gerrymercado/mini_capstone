@@ -14,6 +14,9 @@ Product.create(
   )
 
 Product.create(
-  name: 
+  name: "Nike All Star shoes",
+  price: 210,
+  image_url: "https://stockx.imgix.net/Air-Jordan-XX1-Retro-All-Star-2017.png?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+  description: "rare Air-Jordan-XX1-Retro-All-Star-2017"
   )
 
