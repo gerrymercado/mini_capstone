@@ -25,7 +25,7 @@ class Api::ProductsController < ApplicationController
   end
 
   def update
-    #find the recipe to update
+    #find the product to update
     product_id = params[:id]
     @product = Product.find_by(id: product_id)
     #tell it what to update
@@ -36,6 +36,14 @@ class Api::ProductsController < ApplicationController
 
     @product.save
     render "show.json.jbuilder"
+  end 
+
+  def destroy
+    product_id = params[:id]
+    @product = Product.find_by(id: product_id)
+    @product.destroy 
+
+    render json: {message: "Product successfully destroyed"}
   end 
 
 end
