@@ -28,11 +28,25 @@ require 'unirest'
 
 # puts JSON.pretty_generate(response)
 
-puts "What product id would you like to destroy?"
-product_id = gets.chomp
+# puts "What product id would you like to destroy?"
+# product_id = gets.chomp
 
-response = Unirest.delete("http://localhost:3000/api/products/#{product_id}").body
+# response = Unirest.delete("http://localhost:3000/api/products/#{product_id}").body
 
-puts response
+# puts response
+
+# response = Unirest.post(
+#     "http://localhost:3000/users",
+#     parameters: {
+#       name: "Matt",
+#       email: "matt_stocks@gmail.com",
+#       password: "trader123",
+#       password_confirmation: "trader123"
+#     }
+#   )
+#   p response.body
+
+
+
 
 

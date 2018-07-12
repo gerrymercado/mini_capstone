@@ -1,49 +1,75 @@
 class Api::ProductsController < ApplicationController
 
+  before_action :authenticate_admin, except: [:index, :show]
+
   def index 
     @products = Product.all
+
+    name_search = params[:search]
+
+    if name_search 
+      @products = Product.where("name LIKE ?", "%#{name_search}%")
+    end 
+
+    if params[:price_sort]
+      @products = @products.order(price: :asc)
+    else 
+      @products = @products.order(id: :asc)
+    end 
+
+    if params[:category]
+      category = Category.find_by(name: params[:category])
+      @products = category.products
+    end 
 
     render "index_view.json.jbuilder"
   end 
 
   def show
     product_id = params[:id]
-    @product = Product.find_by(id: product_id)
+    @product = Product.find(product_id)
     render "show.json.jbuilder"
   end 
 
   def create
-    #creates a new product
-
-    @product = Product.create(
+    @product = Product.new(
       name: params[:name],
       price: params[:price],
       image_url: params[:image_url],
-      description: params[:description]
+      description: params[:description],
+      supplier_id: params[:supplier_id]
       )
     render "show.json.jbuilder"
+
+    if @product.save
+      render "show.json.jbuilder"
+    else 
+      render json: {errors: @product.errors.full_messages}, status: :unprocessable_entity 
+    end 
   end
 
   def update
-    #find the product to update
     product_id = params[:id]
-    @product = Product.find_by(id: product_id)
+    @product = Product.find(product_id)
     #tell it what to update
     @product.name = params[:name] || @product.name
     @product.price = params[:price] || @product.price
     @product.image_url = params[:image_url] || @product.image_url
     @product.description = params[:description] || @product.description
+    @product.supplier_id = params[:supplier_id] || @product.supplier_id
 
-    @product.save
-    render "show.json.jbuilder"
+    if @product.save
+      render "show.json.jbuilder"
+    else 
+      render json: {errors: @product.errors.full_messages}, status: :unprocessable_entity
+    end 
   end 
 
   def destroy
     product_id = params[:id]
-    @product = Product.find_by(id: product_id)
+    @product = Product.find(product_id)
     @product.destroy 
 
     render json: {message: "Product successfully destroyed"}
   end 
-
 end
